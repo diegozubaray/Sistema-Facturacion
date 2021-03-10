@@ -38,7 +38,7 @@
 							<td th:text="${cliente.email}"></td>
 							<td th:text="${cliente.createAT}"></td>
 							<td><a th:href="@{/form/} + ${cliente.id}"
-								class="btn btn-outline-dark">Editar</a></td>
+								class="btn btn-outline-success">Editar</a></td>
 							<td><a th:href="@{/eliminar/} + ${cliente.id}"
 								class="btn btn-outline-danger">Eliminar</a></td>
 						</tr>
@@ -46,6 +46,7 @@
 					</tbody>
 
 				</table>
+				<nav th:replace="paginatorNav :: paginator"></nav>
 			</div>
 		</div>
 	</div>

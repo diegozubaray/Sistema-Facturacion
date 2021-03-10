@@ -5,6 +5,9 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,11 +15,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.Zubaray.app.models.Cliente;
+import com.Zubaray.app.paginator.PageRender;
 import com.Zubaray.app.service.IClienteService;
 
 @Controller
@@ -27,9 +32,16 @@ public class ClienteController {
 	private IClienteService clienteService;
 	
 	@GetMapping(value = "/listar")
-	public String listar(Model model) {
+	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
+		
+		Pageable pageRequest = PageRequest.of(page, 5);
+		Page<Cliente> clientes = clienteService.findAll(pageRequest);
+		PageRender<Cliente> pageRender = new PageRender<>("/listar", clientes);
+		
+		
 		model.addAttribute("titulo", "Listado de Clientes");
-		model.addAttribute("clientes", clienteService.findAll());
+		model.addAttribute("clientes",clientes) ;
+		model.addAttribute("page", pageRender);
 		return "listar";
 	}
 	
@@ -71,7 +83,7 @@ public class ClienteController {
 			return "form";
 		}
 		
-		String mensajeFlash = (cliente.getId() != null)? "Cliente Editado con éxito" : "Cliente Creado con éxito";
+		String mensajeFlash = (cliente.getId() != null)? "Cliente editado con éxito" : "Cliente Creado con éxito";
 		
 		clienteService.save(cliente);
 		status.setComplete();
