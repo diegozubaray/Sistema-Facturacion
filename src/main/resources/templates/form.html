@@ -6,10 +6,10 @@
 	<header th:replace="layout/layout :: header"></header>
 
 	<div class="container py-4">
-		<div class="card bg-info text-white">
+		<div class="card bg-dark text-white">
 			<div class=" card-header" th:text="${titulo}"></div>
 			<div class=" card-body">
-				<form th:action="@{/form}" th:object="${cliente}" method="post">
+				<form th:action="@{/form}" th:object="${cliente}" method="post" enctype="multipart/form-data">
 
 					<div class="form-group">
 						<label for="nombre"></label> <input type="text"
@@ -41,7 +41,14 @@
 						<small class="form-text text-danger"
 							th:if="${#fields.hasErrors('createAT')}" th:errors="*{createAT}"></small>
 					</div>
-					<button type="submit" class="btn btn-outline-dark mt-4">Crear
+					
+					<div class="form-group">
+						<label for="file">Fecha</label> 
+						<input type="file" name="file"class="form-control" id="file" >
+						
+					</div>		
+																
+					<button type="submit" class="btn btn-outline-secondary mt-4" th:onclick="save([[${cliente.id}]])">Crear
 						Cliente</button>
 
 				</form>

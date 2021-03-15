@@ -41,6 +41,8 @@ public class Cliente implements Serializable {
 	@Temporal(TemporalType.DATE) // SOLO PARA FECHAS
 	@DateTimeFormat(pattern = "dd-MM-yyyy") // Formato de fecha
 	private Date createAT;
+    
+    private String foto;
 	
 	
 	
@@ -90,4 +92,18 @@ public class Cliente implements Serializable {
 		return serialVersionUID;
 	}
 
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+
+	public Cliente() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	
 }
