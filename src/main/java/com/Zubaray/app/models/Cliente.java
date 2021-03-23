@@ -1,14 +1,18 @@
 package com.Zubaray.app.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,31 +26,34 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Table(name = "clientes")
 public class Cliente implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-    @NotEmpty
+	@NotEmpty
 	private String nombre;
-    @NotEmpty
+
+	@NotEmpty
 	private String apellido;
-    @NotEmpty
-    @Email
+
+	@NotEmpty
+	@Email
 	private String email;
 
-    @NotNull
+	@NotNull
 	@Column(name = "create_at")
-	@Temporal(TemporalType.DATE) // SOLO PARA FECHAS
-	@DateTimeFormat(pattern = "dd-MM-yyyy") // Formato de fecha
-	private Date createAT;
-    
-    private String foto;
-	
-	
-	
-	
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date createAt;
+
+	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Factura> facturas;
+
+	private String foto;
+
+	public Cliente() {
+		facturas = new ArrayList<Factura>();
+	}
 
 	public Long getId() {
 		return id;
@@ -80,16 +87,12 @@ public class Cliente implements Serializable {
 		this.email = email;
 	}
 
-	public Date getCreateAT() {
-		return createAT;
+	public Date getCreateAt() {
+		return createAt;
 	}
 
-	public void setCreateAT(Date createAT) {
-		this.createAT = createAT;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public void setCreateAt(Date createAt) {
+		this.createAt = createAt;
 	}
 
 	public String getFoto() {
@@ -100,10 +103,26 @@ public class Cliente implements Serializable {
 		this.foto = foto;
 	}
 
-	public Cliente() {
-		super();
-		// TODO Auto-generated constructor stub
+	public List<Factura> getFacturas() {
+		return facturas;
 	}
 
+	public void setFacturas(List<Factura> facturas) {
+		this.facturas = facturas;
+	}
+
+	public void addFactura(Factura factura) {
+		facturas.add(factura);
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	
+	@Override
+	public String toString() {
+		return nombre + " " + apellido;
+	}
+	
+	private static final long serialVersionUID = 1L;
 }

@@ -1,7 +1,7 @@
 package com.Zubaray.app;
 
 
-//import java.nio.file.Paths;
+// import java.nio.file.Paths;
 
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
@@ -31,4 +31,5 @@ public class MvcConfig implements WebMvcConfigurer {
 	
 
 }
+
 
